@@ -39,6 +39,7 @@ public class LoginRepositoryImp implements LoginRepositoryI {
 	
 	@Override
 	public LoginDTO selectAll(LoginDTO loginDTO){
+
 		
 		LoginDTO user1 = session.selectOne(namespace + "selectAllU", loginDTO);
 		System.out.println("selectAllU  user=>" + loginDTO);
