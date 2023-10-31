@@ -9,4 +9,5 @@ public interface LoginServiceI {
     LoginDTO selectAll(LoginDTO loginDTO);
     
     public int updateUser(LoginDTO loginDTO);
+
 }

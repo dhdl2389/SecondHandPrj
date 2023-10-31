@@ -15,6 +15,7 @@ public class UserRepositoryRealImp implements UserMemberRepositoryI {
 
 	@Override
 	public int insert(UserDTO userDTO) {
+		System.out.println("kakao  user=>" + userDTO);
 
 		return session.insert(namespace + "insertUser", userDTO);
 	}

@@ -7,4 +7,5 @@ public interface LoginRepositoryI {
 	LoginDTO selectAll(LoginDTO loginDTO);
 	
 	public int update(LoginDTO loginDTO);
+	
 }

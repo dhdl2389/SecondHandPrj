@@ -40,7 +40,9 @@ public class LoginRepositoryImp implements LoginRepositoryI {
 	@Override
 	public LoginDTO selectAll(LoginDTO loginDTO){
 		
-		LoginDTO user1 = session.selectOne(namespace + "checklogin", loginDTO);
+		LoginDTO user1 = session.selectOne(namespace + "selectAllU", loginDTO);
+		System.out.println("selectAllU  user=>" + loginDTO);
+
 		return user1;
 	}
 
@@ -48,7 +50,10 @@ public class LoginRepositoryImp implements LoginRepositoryI {
 	@Override
 	public int update(LoginDTO loginDTO) {
 		// TODO Auto-generated method stub
+		System.out.println("selectAllU  user=>" + loginDTO);
+
 		return session.update(namespace + "updateUser", loginDTO);
+
 	}
 
 
