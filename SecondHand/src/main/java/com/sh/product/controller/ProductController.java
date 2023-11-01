@@ -5,12 +5,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -18,7 +16,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,20 +25,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.sh.product.domain.ProductDTO;
 import com.sh.product.service.ProductService;
 
 @Controller
 public class ProductController {
-	
-	
+
 	String fileDir = "c:\\test\\upload\\";// 물리적 폴더 만들어야함 c드라이브 안에 test폴더 생성후 test폴더안에 upload폴더 생성
 
-	
-	
-	
 	@Autowired
 	private ProductService productservice;
 
@@ -49,13 +41,12 @@ public class ProductController {
 		// ProductService를 통해 상품 목록을 가져와서 모델에 추가
 		List<ProductDTO> products = productservice.getProductList();
 
-		// System.out.println("dfdfd=" + products);
-
 		model.addAttribute("products", products);
 		return "products/productList";
 	}
 
-	///////////////////////////// 상품 상세정보 /////////////////////////////////////////////////////////////////////
+	///////////////////////////// 상품 상세정보
+	///////////////////////////// /////////////////////////////////////////////////////////////////////
 
 	@GetMapping("/products/detail")
 	public String showProductDetail(@RequestParam String boardId, Model model) {
@@ -69,16 +60,15 @@ public class ProductController {
 		return "products/productDetail";
 	}
 
-	///////////////////////////// 상품등록 /////////////////////////////////////////////////////////////////////
+	///////////////////////////// 상품등록
+	///////////////////////////// /////////////////////////////////////////////////////////////////////
 
 	@GetMapping("/products/add")
 	public String showAddProductForm(Model model) {
 		String categoriesJson = productservice.getAllCategoriesJson();
-		
-		
+
 		// System.out.println(json2);
 		model.addAttribute("item", categoriesJson);
-	
 
 		return "products/addProductForm";
 	}
@@ -88,11 +78,11 @@ public class ProductController {
 			throws IllegalStateException, IOException {
 		// ProductService를 통해 상품 추가
 		// MultipartFile file 부분은 파일 업로드시 사용
-		
+
 		System.out.println(product);
 		System.out.println(file);
 
-		//파일 업로드 부분
+		// 파일 업로드 부분
 		String fileRealName = "";
 		if (!file.isEmpty()) {
 			fileRealName = file.getOriginalFilename();
@@ -113,14 +103,14 @@ public class ProductController {
 		return "redirect:/products";
 	}
 
-	///////////////////////////// 상품 업데이트 /////////////////////////////////////////////////////////////////////
+	///////////////////////////// 상품 업데이트
+	///////////////////////////// /////////////////////////////////////////////////////////////////////
 
 	@GetMapping("/products/update")
 	public String updateProductForm(ProductDTO product, @RequestParam String boardId, Model model) {
 		product = productservice.getProductById(boardId);
 		String categoriesJson = productservice.getAllCategoriesJson();
-		
-	
+
 		// System.out.println(json2);
 		model.addAttribute("item", categoriesJson);
 		model.addAttribute("product", product);
@@ -161,7 +151,8 @@ public class ProductController {
 		}
 	}
 
-	///////////////////////////// 상품삭제 /////////////////////////////////////////////////////////////////////
+	///////////////////////////// 상품삭제
+	///////////////////////////// /////////////////////////////////////////////////////////////////////
 	@PostMapping("/products/delete")
 	public String productDelete(@RequestParam String boardId, Model model) {
 		ProductDTO product = productservice.getProductById(boardId);
@@ -169,25 +160,12 @@ public class ProductController {
 		model.addAttribute("product", product);
 		return "redirect:/products";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 
-	///////////////////// 이미지 저장경로,저장하는 코드 //////////////////////////////////////////////////////////////
+	///////////////////// 이미지 저장경로,저장하는 코드
+	///////////////////// //////////////////////////////////////////////////////////////
 	@ResponseBody
 	@RequestMapping(value = "/images/{fileName:.*}", method = RequestMethod.GET)
 	public Resource imageView(@PathVariable String fileName) throws MalformedURLException {
 		return new UrlResource("file:c:\\test\\upload\\" + fileName);
 	}
 }
-
-
-
-
-
-

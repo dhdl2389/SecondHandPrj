@@ -134,7 +134,7 @@
 	<script>
 	
 	$(document).ready(function () {
-	    $('#myForm12').submit(function (e) {
+	    $('#saveForm').submit(function (e) {
 	    	let fields = ['#user_id', '#user_pw', '#user_pw_confirm', '#address', '#phone_num', '#member_post', '#member_addr', '#detailed_address', '#user_birth', '#user_nickname'];
 
 	        for (let i = 0; i < fields.length; i++) {
@@ -186,7 +186,7 @@
 <body>
 
 
-	<form id="myForm12" method="post" action="/testing/myForm12">
+	<form id="saveForm" method="post" action="/testing/saveForm">
         <input type="hidden" id="user_kakao" name="user_kakao" value="${user_kakao}">
         
       <label for="user_id">아이디:</label>
@@ -234,7 +234,7 @@
         
         <label for="user_heat" ></label>
         <input type="hidden" id="user_heat" name="user_heat" value="평점"><br>
-        <button type="submit" form="myForm12">제출하기</button>
+        <button type="submit" form="saveForm">제출하기</button>
     </form>
 <!-- 
 	<div>Address</div>

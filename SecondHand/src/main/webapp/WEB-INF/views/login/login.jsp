@@ -18,8 +18,8 @@
 		<li onclick="logout();"><a href="javascript:void(0)"> <span>카카오
 					로그아웃</span>
 		</a></li>
-		<form id="myForm12" method="post" action="/testing/myForm12">
-			<a href="/testing/logintest1111">
+		<form id="saveForm" method="post" action="/testing/saveForm">
+			<a href="/testing/shSaveUser">
 				<li>우리거 회원가입</li>
 			</a>
 		</form>
@@ -41,7 +41,7 @@
                   response.properties.nickname;
                 document.getElementById("profile_image").value =
                   response.properties.profile_image;      
-                document.getElementById("myForm").submit();
+                document.getElementById("kakaoForm").submit();
                
                
               },
@@ -83,7 +83,7 @@
         }).catch(error => console.error('Error:', error));
       }
     </script>
-	<form id="myForm" method="post" action="/testing/myForm">
+	<form id="kakaoForm" method="post" action="/testing/kakaoForm">
 		<input type="hidden" id="user_kakao" name="user_kakao" value="" /> <input
 			type="hidden" id="nickname" name="nickname" value="" /> <input
 			type="hidden" id="profile_image" name="profile_image" value="" />

@@ -25,16 +25,16 @@ public class KakaoController {
 		return "/login/login";
 	}
 
-	@PostMapping("/myForm")
+	@PostMapping("/kakaoForm")
 	public String sendData(@RequestParam String user_kakao, @RequestParam String nickname,
 			@RequestParam String profile_image, Model model) {
 		model.addAttribute("user_kakao", user_kakao);
 		model.addAttribute("nickname", nickname);
 		model.addAttribute("profile_image", profile_image);
-		return "saveUser";
+		return "/saveUser/saveUser";
 	}
 
-	@PostMapping("/myForm12")
+	@PostMapping("/saveForm")
 	public String registerMember(UserDTO userDTO) {
 		service1.registerMember(userDTO);
 		return "/login/login";

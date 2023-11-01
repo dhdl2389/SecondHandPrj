@@ -46,8 +46,6 @@
 	<context:component-scan
 		base-package="com.sh.homePage" />
 	<context:component-scan
-		base-package="com.sh.kakaologinpay" />
-	<context:component-scan
 		base-package="com.sh.product" />
 	<context:component-scan
 		base-package="com.sh.scroll" />

@@ -79,37 +79,30 @@ public class ProductService implements ProductServiceI {
 		String jsonResult = gson.toJson(map);
 		return jsonResult;
 	}
-	
-		@Override
-	  public void toggleLike(String boardId, String userCode) {
-	        Map<String, String> likeInfo = new HashMap<>();
-	        likeInfo.put("boardId", boardId);
-	        likeInfo.put("userCode", userCode);
 
-	        int likeCount = productRepository.getLikeCount(boardId);
+	@Override
+	public void toggleLike(String boardId, String userCode) {
+		Map<String, String> likeInfo = new HashMap<>();
+		likeInfo.put("boardId", boardId);
+		likeInfo.put("userCode", userCode);
 
-	        if (likeCount > 0) {
-	            // 이미 좋아요를 누른 상태이면 좋아요 취소
-	        	
-	         
-	            productRepository.removeLike(likeInfo);
-	        } else {
-	            // 좋아요를 누르지 않은 상태이면 좋아요 추가
-	            productRepository.addLike(likeInfo);
-	        }
-	    }
-		
-		
-	
+		int likeCount = productRepository.getLikeCount(boardId);
 
-	    // 좋아요 개수 조회
+		if (likeCount > 0) {
+			// 이미 좋아요를 누른 상태이면 좋아요 취소
 
-	  	@Override
-	    public int getLikeCount(String boardId) {
-	        return productRepository.getLikeCount(boardId);
-	    }
+			productRepository.removeLike(likeInfo);
+		} else {
+			// 좋아요를 누르지 않은 상태이면 좋아요 추가
+			productRepository.addLike(likeInfo);
+		}
+	}
 
-	
+	// 좋아요 개수 조회
 
-	 
+	@Override
+	public int getLikeCount(String boardId) {
+		return productRepository.getLikeCount(boardId);
+	}
+
 }

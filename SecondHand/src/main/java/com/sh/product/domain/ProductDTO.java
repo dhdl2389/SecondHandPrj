@@ -5,17 +5,6 @@ import lombok.Data;
 @Data
 public class ProductDTO {
 
-	/*
-	 * 
-	 * ------------- -------- ------------- BOARD_ID NOT NULL VARCHAR2(50)
-	 * BOARD_DATE NOT NULL VARCHAR2(40) BOARD_TITLE NOT NULL VARCHAR2(200)
-	 * BOARD_PRICE NOT NULL NUMBER(10) BOARD_TEXT NOT NULL VARCHAR2(500) BOARD_IMG
-	 * NOT NULL VARCHAR2(500) BOARD_LIKES NOT NULL NUMBER(10) BOARD_SOLDOUT NOT NULL
-	 * NUMBER(10) BOARD_CLICK
-	 * 
-	 * 
-	 * 
-	 */
 	private String board_Id; // 상품 게시글 번호
 	private String board_Date; // 상품 게시글 시간
 

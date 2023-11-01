@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.sh.login.domain.LoginDTO;
 
-
 @Repository
 public class LoginRepositoryImp implements LoginRepositoryI {
 
@@ -21,7 +20,7 @@ public class LoginRepositoryImp implements LoginRepositoryI {
 
 		LoginDTO user = session.selectOne(namespace + "checklogin", loginDTO);
 
-		//System.out.println("db  user=>" + user);
+		// System.out.println("db user=>" + user);
 
 		// 사용자를 찾지 못한 경우
 		if (user == null) {
@@ -35,24 +34,18 @@ public class LoginRepositoryImp implements LoginRepositoryI {
 			return false; // 로그인 실패
 		}
 	}
-	
-	
+
 	@Override
-	public List<Object> selectAll(LoginDTO loginDTO){
-		
+	public List<Object> selectAll(LoginDTO loginDTO) {
+
 		List<Object> user1 = session.selectList(namespace + "selectAllU", loginDTO);
 		return user1;
 	}
-
 
 	@Override
 	public int update(LoginDTO loginDTO) {
 		// TODO Auto-generated method stub
 		return session.update(namespace + "updateUser", loginDTO);
 	}
-
-
-
-
 
 }

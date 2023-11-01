@@ -15,16 +15,15 @@ public class UserController {
 	@Autowired
 	UserMemberService service;
 
-	@GetMapping("/logintest1111")
-	public String logintest() {
+	@GetMapping("/shSaveUser")
+	public String goTosave() {
 		return "/saveUser/saveUser";
 	}
-	
+
 	@ResponseBody
 	@PostMapping("/isUserIdExists")
 	public boolean isUserIdExists(@RequestParam String user_id) {
-	    return service.isUserIdExists(user_id);
+		return service.isUserIdExists(user_id);
 	}
-
 
 }

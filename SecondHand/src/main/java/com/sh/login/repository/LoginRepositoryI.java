@@ -5,8 +5,9 @@ import java.util.List;
 import com.sh.login.domain.LoginDTO;
 
 public interface LoginRepositoryI {
-    public boolean checklogin(LoginDTO loginDTO);
+	public boolean checklogin(LoginDTO loginDTO);
+
 	List<Object> selectAll(LoginDTO loginDTO);
-	
+
 	public int update(LoginDTO loginDTO);
 }

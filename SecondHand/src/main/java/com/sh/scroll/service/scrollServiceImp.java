@@ -9,16 +9,16 @@ import com.sh.scroll.domain.ScrollDTO;
 import com.sh.scroll.repository.scrollRepositoryI;
 
 @Service
-public class scrollServiceImp implements scrollServiceI{
-	
+public class scrollServiceImp implements scrollServiceI {
+
 	@Autowired
 	scrollRepositoryI dao;
-	
+
 	@Override
 	public int getTotalCnt() {
 		return dao.totalCnt();
 	}
-	
+
 	@Override
 	public List<ScrollDTO> getListScroll(int curpage, int pageSize) {
 		return dao.getScroll(curpage, pageSize);
