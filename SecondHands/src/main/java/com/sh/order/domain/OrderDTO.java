@@ -16,6 +16,6 @@ public class OrderDTO {
     private String member_addr;
     private String detailed_address;
     private String delivery_req;
-    private String board_Date;
+    private String order_date;
     
 }

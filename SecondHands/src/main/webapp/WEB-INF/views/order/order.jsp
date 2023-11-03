@@ -29,6 +29,24 @@
         }
     </script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    
+    <script>
+        function validateForm() {
+            var nickname = document.getElementById('user_nickname').value;
+            var userCode = document.getElementById('user_code').value;
+            var userId = document.getElementById('user_id').value;
+            var phoneNum = document.getElementById('phone_num').value;
+            var memberPost = document.getElementById('member_post').value;
+            var memberAddr = document.getElementById('member_addr').value;
+            var detailedAddress = document.getElementById('detailed_address').value;
+
+            if (nickname === "" || userCode === "" || userId === "" || phoneNum === "" || memberPost === "" || memberAddr === "" || detailedAddress === "") {
+                alert("모든 값을 입력해주세요!");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 <body>
     <c:set var="user" value="${sessionScope.user}" />
@@ -38,7 +56,7 @@
         <c:set var="selectedUser" value="${selectedUserList[0]}" />
         <h2>${selectedUser.user_code}:님</h2>
 
-        <form id="orderForm" method="post" action="/testing/orderForm">
+        <form id="orderForm" method="post" action="/testing/orderForm" onsubmit="return validateForm()">
             <label for="nickname">닉네임:</label><br>
             <input type="text" id="user_nickname" name="user_nickname" value="${selectedUser.user_nickname}" readonly/><br><br>
             <label for="userCode">유저 코드:</label><br>
@@ -71,7 +89,6 @@
     <label for="board_price">상품 가격</label>
     <input type="text" name="board_price" value="${singleProduct.board_Price}" readonly><br><br>
 </c:forEach>
-           
              <button type="submit" form="orderForm">주문하기</button>
         </form>
 

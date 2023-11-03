@@ -1,5 +1,6 @@
 package com.sh.order.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,13 +30,15 @@ public class OrderController {
 
 	@GetMapping("/order")
 	public String productOrder(@RequestParam String boardId, Model model, HttpSession session) {
-		ProductDTO product = productservice.getProductById(boardId);
-		List<ProductDTO> productList = (List<ProductDTO>) session.getAttribute("products");
+	    ProductDTO product = productservice.getProductById(boardId);
+	    List<ProductDTO> productList = new ArrayList<>(); // 새로운 리스트를 생성합니다.
 
-		model.addAttribute("product", product);
-		model.addAttribute("products", productList);
+	    // 원하는 상품만 추가합니다.
+	    productList.add(product);
+	    model.addAttribute("product", product);
+	    model.addAttribute("products", productList);
 
-		return "/order/order";
+	    return "/order/order";
 	}
 
 	@GetMapping("/showOrder")

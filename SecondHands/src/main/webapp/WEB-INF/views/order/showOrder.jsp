@@ -60,7 +60,7 @@ tr {
 						<td>${order.member_addr}</td>
 						<td>${order.detailed_address}</td>
 						<td>${order.delivery_req}</td>
-						<td>${order.board_Date}</td>
+						<td>${order.order_date}</td>
 					</tr>
 
 				</c:forEach>
