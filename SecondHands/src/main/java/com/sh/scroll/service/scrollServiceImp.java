@@ -20,7 +20,13 @@ public class scrollServiceImp implements scrollServiceI {
 	}
 
 	@Override
-	public List<ScrollDTO> getListScroll(int curpage, int pageSize) {
-		return dao.getScroll(curpage, pageSize);
+	public List<ScrollDTO> getListScroll(int curpage, int pageSize, String mode) {
+		return dao.getScroll(curpage, pageSize, mode);
 	}
+
+	@Override
+	public List<ScrollDTO> getSearchList(String searchTerm) {
+		return dao.getSearchList(searchTerm);
+	}
+
 }

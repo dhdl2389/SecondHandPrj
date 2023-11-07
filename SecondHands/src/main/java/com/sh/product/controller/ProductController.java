@@ -46,9 +46,6 @@ public class ProductController {
 		HttpSession session = request.getSession();
 		List<ProductDTO> products = productservice.getProductList();
 
-		// System.out.println("dfdfd=" + products);
-
-		// model.addAttribute("products", products);
 		session.setAttribute("products", products);
 		System.out.println("상품정보=" + products);
 		return "products/productList";
@@ -117,7 +114,7 @@ public class ProductController {
 //           System.out.println("Description: " + product.getBoard_Text());
 //           System.out.println("Image URL: " + product.getBoard_Img());
 
-		return "redirect:/products";
+		return "redirect:/scrollHome";
 	}
 
 	///////////////////////////// 상품 업데이트
@@ -160,11 +157,11 @@ public class ProductController {
 		int updateResult = productservice.updateProduct(product);
 		if (updateResult > 0) {
 			System.out.println("상품 수정 성공!");
-			return "redirect:/products";
+			return "redirect:/scrollHome";
 		} else {
 			System.out.println("상품 수정 실패!");
 
-			return "redirect:/products";
+			return "redirect:/scrollHome";
 		}
 	}
 
@@ -175,7 +172,7 @@ public class ProductController {
 		ProductDTO product = productservice.getProductById(boardId);
 		productservice.deleteProduct(boardId);
 		model.addAttribute("product", product);
-		return "redirect:/products";
+		return "redirect:/scrollHome";
 	}
 
 	///////////////////////////// 좋아요 추가JH//////////////////

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set  var="path"   value="${pageContext.request.contextPath}"/> 
+<c:set var="path" value="${pageContext.request.contextPath}" />
 
 
 <!--<c:set  var="path2"   value="<%=request.getContextPath() %>"/> -->
@@ -53,72 +53,70 @@
 	padding: 15px;
 	border-radius: 10px;
 }
+
+#sort {
+	width: 1000px;
+	margin: 0px auto;
+}
 </style>
+</head>
+<body>
 
-<script>
 
-    
-    $("html, body").animate({scrollTop: 0}, 0);
+	<div
+		style='height: 150px; background-color: burlywood; font-size: 20px; color: white'>
+	</div>
+	<a href="/testing/products/add">Add Product</a>
+	<div id="sort">
+		<button id="srTime">최신순</button>
+		<button id="srClick">인기순</button>
+		<label for="srSearch">검색:</label><input type="text"
+			id="srSearch" value="" /><br>
+		<br>
+	</div>
+	<div class="wrap"></div>
+	<button id="myBtn" title="Go to top">Top</button>
+
+
+	<script>
+	//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 설정할 부분
+	let HeightY = 600; //페이지당 나오는 아이템들 높이합
+	//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
     let page = 1; //초기 페이지
-    let HeightY = 600; //페이지당 나오는 아이템들 높이합
+    let sort_mode = ".getListTime"; // 정렬 기본값 : 최신순
+    //조회순(인기순) 정렬 : ".getListClick"
+
     let cursorH = page*HeightY; //로드 시 스크롤 위치 조정
     let wrapH = HeightY*5; //초기 wrap 높이
-    
     let totalPage; // totalpage ajax에서 불러옴
-    
-
     let loading = false; // 추가 데이터 로딩 중 여부
-    loadPage(page);
     
-  	function  pageToString(list){
-    	 console.log( list); 
-    	 let sql = "";
-    	 list.forEach(  ( item) => { 
-    		 console.log( item); 
-     		 sql += `     	 
-     		<div class="imgwrap">
-     			<div class="div1">
-     			<img src="${path}/images/<%="${item.board_img}" %>" alt="Product Image" style="max-width: 100px; max-height: 100px;">
-     			</div>
-     			<div>&nbsp[<%="${item.num}"%>] <a href="/testing/products/detail?boardId=<%="${item.board_id}" %>"><%="${item.board_title}"%></a> |&nbsp</div>
-     			<div><%="${item.board_date}"%> | <%="${item.board_title}"%>
-     			| <%="${item.user_nickname}"%> | <%="${item.loc_code}"%>/<%="${item.detail_loc}"%>
-     			| <%="${item.board_price}"%> | 조회수 : <%="${item.board_click}"%>
-     			</div>
-     		</div>
-    	`
-    	console.log( "이미지 이름 " + item.board_img);
-    	;} );
-        return sql;
- 	}
+   	loadPage(page);
+    $("html, body").animate({scrollTop: 0}, 0);
 
-    // 페이지 로드 함수
-    function loadPage(pageNumber) {
-        if (!loading) {
-            loading = true;
-            $.ajax({
-                url: "scroll?p=" + pageNumber, // 서버측 엔드포인트 설정
-                type: "GET",              
-                success: function (data) {
-                    // 받은 HTML을 .wrap에 추가
-                    let list =  data.list;
-                    totalPage = data.totalPage;
-                    console.log("성공" + data);     
-                    console.log("헨들러" + totalPage);  
-                 
-                    let sql = pageToString(list);
-                    $(".wrap").empty();
-                    $(".wrap").append(sql);
-                  
-                    loading = false;
-                },
-                error: function (error) {
-                    console.log("Error:", error);
-                    loading = false;
-                }
-            });
-        }
-    }
+    function loadPage(pageNumber, searchTerm) {
+		if (!loading) {
+			loading = true;
+			$.ajax({
+				url: "scroll?p=" + pageNumber + "&mode=" + sort_mode + "&searchTerm=" + searchTerm,
+				type: "GET",
+				success: function(data) {
+					let list = data.list;
+					totalPage = data.totalPage;
+					let sql = pageToString(list);
+					$(".wrap").empty();
+					$(".wrap").append(sql);
+					loading = false;
+				},
+				error: function(error) {
+					console.log("Error:", error);
+					loading = false;
+				}
+			});
+		}
+	}
+
 
     // 스크롤 이벤트
     window.addEventListener("scroll", function () {
@@ -128,7 +126,6 @@
         if (scrollY >= HeightY && page < totalPage) {
             page += 1;
             HeightY += cursorH;
-            //alert(page + " 작동, " + pageHeight+", " + scrollY);
             $("html, body").animate({scrollTop: (page-1)*cursorH}, 500);
             loadPage(page);
             wrapH += cursorH;
@@ -146,24 +143,64 @@
         }
     });
     
+    //str문 생성
+  	function  pageToString(list){
+   	 console.log( list); 
+   	 let str = "";
+   	 list.forEach(  ( item) => { 
+   			str += `     	 
+    		<div class="imgwrap">
+    			<div class="div1">
+    			<img src="${path}/images/<%="${item.board_img}" %>" alt="Product Image" style="max-width: 100px; max-height: 100px;">
+    			</div>
+    			<div>&nbsp[<%="${item.num}"%>] <a href="/testing/products/detail?boardId=<%="${item.board_id}" %>"><%="${item.board_title}"%></a> |&nbsp</div>
+    			<div><%="${item.board_date}"%> | <%="${item.board_title}"%>
+    			| <%="${item.user_nickname}"%> | <%="${item.loc_code}"%>/<%="${item.detail_loc}"%>
+    			| <%="${item.board_price}"%> | 조회수 : <%="${item.board_click}"%>
+    			</div>
+    		</div>
+   	`
+   	;} );
+       return str;
+	}
+    
     //맨위로 올리기
-    $(document).ready(function(){
-    	$("html, body").animate({scrollTop: 0}, 1000);
-        // 버튼을 클릭하면 페이지 맨 위로 스크롤합니다.
-        $("#myBtn").click(function(){
-            $("html, body").animate({scrollTop: 0}, 1000); // 1000은 애니메이션 속도를 나타냅니다. 여기서는 1000ms로 설정했습니다.
-        });
-    });
+	$(document).ready(function() {
+		$("html, body").animate({scrollTop: 0}, 0);
+
+		$("#myBtn").click(function() {
+			$("html, body").animate({scrollTop: 0}, 1000);
+		});
+
+		$("#srTime").click(function() {
+			sort_mode = ".getListTime";
+			loadPage(page);
+		});
+
+		$("#srClick").click(function() {
+			sort_mode = ".getListClick";
+			loadPage(page);
+		});
+
+		$("#srSearch").on('input', function() {
+			let searchTerm = $("#srSearch").val();
+			loadSearchResults(searchTerm);
+		});
+
+		function loadSearchResults(searchTerm) {
+			$.ajax({
+				url: "search?searchTerm=" + searchTerm,
+				type: "GET",
+				success: function(data) {
+					let resultHtml = pageToString(data);
+					$(".wrap").empty().append(resultHtml);
+				},
+				error: function(error) {
+					console.log("Error:", error);
+				}
+			});
+		}
+	});
 </script>
-</head>
-<body>
-	<div
-		style='height: 150px; background-color: burlywood; font-size: 20px; color: white'>
-		&nbsp Second Hand</div>
-	<a href="/testing/products/add">Add Product</a>
-	<div class="wrap"></div>
-
-	<button id="myBtn" title="Go to top">Top</button>
-
 </body>
 </html>

@@ -3,10 +3,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.sh.proMapper">
-
 	<!-- 게시글 작성 -->
 	<insert id="insertProduct" parameterType="ProductDTO">
-		INSERT INTO user_board (
+		INSERT INTO user_board
+		(
 		board_id,
 		board_date,
 		board_title,
@@ -19,7 +19,8 @@
 		loc_code ,
 		detail_loc ,
 		user_code ,
-		user_nickname
+		user_nickname,
+		board_cate
 		)
 		VALUES (seq_board_id.nextval,
 		sysdate,
@@ -33,7 +34,8 @@
 		#{loc_code} ,
 		#{detail_loc} ,
 		#{user_code} ,
-		#{user_nickname})
+		#{user_nickname} ,
+		#{board_cate})
 
 	</insert>
 	<!-- 게시글 전체 보기 -->
@@ -51,7 +53,8 @@
 		loc_code,
 		detail_loc,
 		user_code ,
-		user_nickname
+		user_nickname,
+		board_cate
 		FROM user_board
 		ORDER BY board_date DESC
 	</select>
@@ -70,9 +73,11 @@
 		ub.loc_code,
 		ub.detail_loc,
 		ub.user_code ,
-		ub.user_nickname
+		ub.user_nickname,
+		ub.board_cate
 		FROM user_board ub
-		WHERE ub.board_id = #{boardId}
+		WHERE
+		ub.board_id = #{boardId}
 	</select>
 
 
@@ -84,13 +89,15 @@
 
 		board_title = #{board_Title},
 		board_price = #{board_Price},
-		board_text = #{board_Text},
+		board_text =
+		#{board_Text},
 		board_img = #{board_Img},
 
 		loc_code = #{loc_code},
 		detail_loc = #{detail_loc},
 		user_code = #{user_code},
-		user_nickname = #{user_nickname}
+		user_nickname =
+		#{user_nickname}
 		WHERE board_id = #{board_Id}
 	</update>
 
@@ -105,7 +112,8 @@
 
 	<update id="increaseClick" parameterType="String">
 		UPDATE user_board
-		SET board_click = board_click + 1
+		SET
+		board_click = board_click + 1
 		WHERE board_id = #{boardId}
 	</update>
 
@@ -114,7 +122,8 @@
 
 	<update id="updateDate" parameterType="Map">
 		UPDATE user_board
-		SET board_date = sysdate
+		SET
+		board_date = sysdate
 		WHERE board_id = #{boardId}
 	</update>
 
@@ -123,28 +132,31 @@
 
 	<select id="getAllCategory" resultType="cateDTO"
 		parameterType="String">
-		SELECT loc_code, detail_loc FROM cate where loc_code= #{loc_code}
+		SELECT loc_code, detail_loc FROM cate where loc_code=
+		#{loc_code}
 	</select>
 	<select id="getAllCategories" resultType="cateDTO"
 		parameterType="String">
-		SELECT loc_code, detail_loc FROM cate where loc_code= #{loc_code}
+		SELECT loc_code, detail_loc FROM cate where loc_code=
+		#{loc_code}
 	</select>
+
 
 
 	<insert id="insertLike" parameterType="ProductDTO">
-		INSERT INTO board_like (like_id, board_id, user_code)
-		VALUES (seq_board_like.nextval,#{board_Id}, #{user_code})
+		INSERT INTO board_like
+		(like_id, board_id, user_id)
+		VALUES (seq_board_like.nextval,#{boardId}, #{userId})
 	</insert>
-
-	<select id="getLikeCount" parameterType="String"
-		resultType="int">
-		SELECT COUNT(*) AS likeCount
-		FROM board_like
-		WHERE board_id = #{boardId}
+	<select id="getLikeCount" resultType="int">
+		SELECT COUNT(*) AS likeCount FROM board_like WHERE board_id = #{boardId}
 	</select>
-
-
-
-
-
+	<!-- 좋아요 눌렀던 적이 있는지 -->
+	<select id="getlikeClick" resultType="boolean">
+		SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END AS result FROM board_like
+		WHERE user_id = #{userId} AND board_id = #{boardId}
+	</select>
+	<select id="getlikeDelete">
+		delete from board_like where user_id =#{userId} and board_id =#{boardId}
+	</select>
 </mapper>
