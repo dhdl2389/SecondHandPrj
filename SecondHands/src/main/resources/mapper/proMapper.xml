@@ -142,21 +142,38 @@
 	</select>
 
 
-
+	<!-- 좋아요 부분 -->
 	<insert id="insertLike" parameterType="ProductDTO">
-		INSERT INTO board_like
-		(like_id, board_id, user_id)
-		VALUES (seq_board_like.nextval,#{boardId}, #{userId})
+	    INSERT INTO board_like (like_id, board_id, user_id)
+	    VALUES (seq_board_like.nextval,#{boardId}, #{userId})
 	</insert>
-	<select id="getLikeCount" resultType="int">
-		SELECT COUNT(*) AS likeCount FROM board_like WHERE board_id = #{boardId}
-	</select>
-	<!-- 좋아요 눌렀던 적이 있는지 -->
-	<select id="getlikeClick" resultType="boolean">
-		SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END AS result FROM board_like
+    <select id="getlikeDelete">
+        delete from board_like where user_id =#{userId} and board_id =#{boardId}
+    </select>
+    <!-- 상품상세_좋아요 개수 -->
+    <select id="getLikeCount" resultType="int">
+        SELECT COUNT(*) AS likeCount
+        FROM board_like
+        WHERE board_id = #{boardId}
+    </select>
+   <!-- 좋아요 눌렀는지 -->
+      <select id="getlikeClick" resultType="boolean">
+        SELECT CASE
+		  WHEN COUNT(*) > 0 THEN 1
+		  ELSE 0
+		END AS result
+		FROM board_like
 		WHERE user_id = #{userId} AND board_id = #{boardId}
+    </select>
+    <!-- 관심상품 개수 -->
+	<select id="getLikeNum" resultType="int">
+		select count(*) from board_like where user_id = #{userId}
 	</select>
-	<select id="getlikeDelete">
-		delete from board_like where user_id =#{userId} and board_id =#{boardId}
-	</select>
+    
+       <!-- 동네인증 지역 목록 -->
+   <select id="getLocalProducts" resultType="ProductDTO" parameterType="String">
+      SELECT * FROM user_board WHERE detail_loc = #{detail_loc}
+   </select>
+    
+    
 </mapper>
