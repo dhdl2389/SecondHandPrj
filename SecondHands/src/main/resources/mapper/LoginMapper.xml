@@ -40,10 +40,20 @@
 		#{user_code}
 	</select>
 
+	<select id="selectHeatU" parameterType="String"
+		resultType="String">
+		SELECT user_nickname FROM user_tbl WHERE
+		user_code =
+		#{user_code}
+	</select>
+
+
 	<update id="updateHeat" parameterType="String">
 		UPDATE user_tbl
-		SET user_heat = #{user_heat, jdbcType=VARCHAR}
-		WHERE user_code = #{user_code, jdbcType=VARCHAR}
+		SET
+		user_heat = #{user_heat, jdbcType=VARCHAR}
+		WHERE user_code =
+		#{user_code, jdbcType=VARCHAR}
 	</update>
 
 

@@ -230,6 +230,7 @@ public class ProductController {
 		return map;
 	}
 
+	//좋아요 클릭
 	@ResponseBody
 	@PostMapping("/products/likeEvent")
 	public boolean likeEvent(String userId, String boardId) {
