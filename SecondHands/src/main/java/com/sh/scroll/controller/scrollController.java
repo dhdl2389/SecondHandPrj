@@ -47,14 +47,11 @@ public class scrollController {
 	@ResponseBody
 	@GetMapping("/scroll")
 	public Map<String, Object> scrollGet(String page, String mode) {
-		
-		System.out.println("도착");
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = Integer.parseInt(page);
 		}
 		int toRecords = service.getTotalCnt();
-		System.out.println("스크롤"+toRecords + ", " + page);
 		
 		//스크롤 한번당 6개씩
 		int pageSize = 6;
@@ -67,9 +64,6 @@ public class scrollController {
 		// ajax에서 응답하는거라 model 사용 못함
 		Map<String, Object> map = new HashMap<String, Object>();
 		int totalPage = handler.getTotalPage();
-		
-		System.out.println("총 갯수 = " + totalPage);
-		System.out.println("출력 = " + list);
 		
 		map.put("totalPage", totalPage);
 		map.put("list", list);
@@ -89,5 +83,24 @@ public class scrollController {
 		List<ScrollDTO> list = service.getLikeList(userId);
 		return list;
 	}
+	
+	//판매중인 상품 Home
+	@GetMapping("/sellProducts")
+	public String sellHome(HttpServletRequest request) {
+		//상품 이미지 및 부가정보 심어둠
+		HttpSession session = request.getSession();
+		List<ProductDTO> products = productservice.getProductList();
+		session.setAttribute("products", products);
+		return "products/sellProducts";
+	}
 
+	//판매중인 상품 Ajax
+	@ResponseBody
+	@GetMapping("/sellList")
+	public List<ScrollDTO> sellGet(String user_code) {
+		System.out.println("유저코드(판매내역) = " + user_code);
+		//출력할 리스트 받아옴
+		List<ScrollDTO> list = service.getSellProducts(user_code);
+		return list;
+	}
 }

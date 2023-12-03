@@ -7,7 +7,10 @@ import com.sh.login.domain.LoginDTO;
 public interface LoginRepositoryI {
    public boolean checklogin(LoginDTO loginDTO);
 
-   List<Object> selectAll(LoginDTO loginDTO);
+   List<LoginDTO> selectAllUsers();  // 추가
+   LoginDTO getUserById(String userId); // 새로운 메소드 추가
+  
+   LoginDTO getLoginDTO(String userId);
 
    public int update(LoginDTO loginDTO);
 

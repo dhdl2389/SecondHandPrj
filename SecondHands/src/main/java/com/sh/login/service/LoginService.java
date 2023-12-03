@@ -11,6 +11,8 @@ import com.sh.login.repository.LoginRepositoryI;
 @Service
 public class LoginService implements LoginServiceI {
 
+	
+	
    @Autowired
    private LoginRepositoryI userRepository;
 
@@ -21,11 +23,21 @@ public class LoginService implements LoginServiceI {
    }
 
    @Override
-   public List<Object> selectAll(LoginDTO loginDTO) {
-      // TODO Auto-generated method stub
-      return userRepository.selectAll(loginDTO);
+   public LoginDTO getUserById(String userId) {
+       return userRepository.getUserById(userId);
    }
-
+   @Override
+   public List<LoginDTO> selectAllUsers() {
+      return userRepository.selectAllUsers();
+   }//23/11/21어드민 추가
+   
+   
+   @Override
+   public LoginDTO getLoginDTO(String userId) {
+		// TODO Auto-generated method stub
+		return userRepository.getLoginDTO(userId);
+	}
+   
    @Override
    public int updateUser(LoginDTO loginDTO) {
       // TODO Auto-generated method stub

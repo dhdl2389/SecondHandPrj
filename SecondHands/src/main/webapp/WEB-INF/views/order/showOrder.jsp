@@ -5,6 +5,7 @@
 <%@ page import="com.sh.login.domain.LoginDTO"%>
 <%@ page import="com.sh.order.domain.OrderDTO"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+ <html xmlns:th="http://www.thymeleaf.org">
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -44,6 +45,9 @@ header h2 {
 }
 
 .menu-icon {
+    justify-content: center;
+    align-items: center;
+    display: flex;
    order: -1;
    font-size: 24px;
    cursor: pointer;
@@ -95,8 +99,9 @@ header.menu-open h2 {
 
 .header-btn {
    display: flex;
-   margin: 0px 0px 0px 500px;
+   margin: 0px 0px 0px 0px;
 }
+
 
 header.menu-open {
    flex-direction: column;
@@ -172,11 +177,12 @@ header.menu-open h2 {
    /*border: 1px solid black;*/
    display: flex; /* 자식 요소를 가로로 정렬 */
    justify-content: space-between; /* 자식 요소 간의 간격을 최대화하여 정렬 */
+   flex-wrap: wrap; /* 화면 크기에 따라 줄 바꿈 */
    height: 1000px;
 }
 
 .main-top div {
-   width: 50%;
+   width: 100%; /* 50%에서 100%로 수정 */
    padding: 20px;
    text-align: center; /* 가운데 정렬 추가 */
 }
@@ -270,7 +276,7 @@ header.menu-open h2 {
 }
 
 .main-middle div {
-   width: 50%;
+   width: 100%; /* 50%에서 100%로 수정 */
    padding: 20px;
    text-align: start;
 }
@@ -316,7 +322,7 @@ header.menu-open h2 {
 #saveForm {
    margin: 20px auto;
    box-shadow: 0px 0px 5px #ccc;
-   width: 1400px;
+   width: 100%; /* 1400px에서 100%로 수정 */
    padding: 20px;
    background-color: #fff;
    border-radius: 8px;
@@ -402,74 +408,94 @@ footer a:hover {
 
 
 
+
+
+
    <c:set var="user" value="${sessionScope.user}" />
    <c:set var="selectedUserList" value="${sessionScope.selectedUser}" />
 
    <%
    LoginDTO user = (LoginDTO) session.getAttribute("user");
-   List<LoginDTO> selectedUser = (List<LoginDTO>) session.getAttribute("selectedUser");
+   LoginDTO selectedUser = (LoginDTO) session.getAttribute("selectedUser");
    List<Object> chatList = (List<Object>) request.getAttribute("chatList"); // chatList 추가
-   if (user != null && selectedUser != null && !selectedUser.isEmpty()) {
-      LoginDTO firstSelectedUser = selectedUser.get(0);
+   if (user != null && selectedUser != null) {
+      LoginDTO firstSelectedUser = selectedUser;
    %>
-   <c:if test="${not empty user and not empty selectedUserList}">
-      <c:set var="selectedUser" value="${selectedUserList[0]}" />
+   <c:if test="${not empty user}">
+      <c:set var="selectedUser" value="${selectedUser}" />
 
 
       <header>
          <div class="header-logo">
             <div class="menu-icon">&#9776;</div>
-            <form action="/testing/homePage">
+            <form action="${path}/homePage">
                <button type="submit">Second Hands</button>
             </form>
          </div>
 
          <div class="menu-container">
             <ul>
-               <li><h2></h2></li>
-               <li><img
-                  src="${path}/images/<%=firstSelectedUser.getUser_image()%>"
-                  style="border-radius: 50%; width: 100px; height: 100px;">
+                            <% if ("admin".equals(selectedUser.getUser_id())) {
+%>
+     
+      <li>
+            <form action="${path}/admin" method="post">
+            <button type="submit">관리자 페이지</button>
+        </form>
+   </li>     <%
+         }
+         %>
+               <li><img src="${selectedUser.user_image}" style="border-radius: 50%; width: 100px; height: 100px;">
                   <h2>
                      <%
-                     if (user != null && selectedUser != null && !selectedUser.isEmpty()) {
+                     if (user != null && selectedUser != null) {
                      %>
-                     Welcome,
-                     <%=firstSelectedUser.getUser_nickname()%>님
-                  </h2></li>
+                     <form action="${path}/myPage" method="post">
+						<input type="hidden" name="user_code" value="${selectedUser.user_code}">
+						<button type="submit">
+						Welcome, ${selectedUser.user_nickname}님
+						</button>
+					</form>
+                  </h2>
+               </li>
                <li>
-                  <form action="/testing/myPage" method="post">
+                  <form action="${path}/myPage" method="post">
                      <input type="hidden" name="user_code"
                         value="<%=firstSelectedUser.getUser_code()%>">
-                     <button type="submit">마이페이지 이동</button>
+                     <button type="submit">마이페이지</button>
                   </form>
                </li>
                <li>
-                  <form action="/testing/chattingList" method="post">
+                  <form action="${path}/chattingList" method="post">
                      <input type="hidden" name="buy_code" placeholder="채팅 코드 입력"
                         value="<%=firstSelectedUser.getUser_code()%>">
-                     <button type="submit">새 채팅 ${fn:length(chatList)} 개</button>
+                     <button type="submit">채팅 ${fn:length(chatList)} 개</button>
 
 
                   </form>
                </li>
                <li>
-                  <form action="/testing/products/add">
+                  <form action="${path}/products/add">
                      <button type="submit">게시글작성</button>
                   </form>
                </li>
+                 <li>
+               <form action="${path}/sellProducts">
+                  <button type="submit">판매내역</button>
+               </form>
+            </li>
                <li>
-                  <form action="/testing/showOrder">
+                  <form action="${path}/showOrder">
                      <button type="submit">주문내역</button>
                   </form>
                </li>
                <li>
-                  <form action="/testing/qna">
+                  <form action="${path}/qna">
                      <button type="submit">문의하기</button>
                   </form>
                </li>
                <li>
-                  <form action="/testing/logout" method="post">
+                  <form action="${path}/logout" method="post">
                      <button type="submit">로그아웃</button>
                   </form>
                </li>
@@ -478,7 +504,7 @@ footer a:hover {
                %>
                <li><h2>로그인이 필요한 서비스입니다.</h2></li>
                <li>
-                  <form action="/testing/login">
+                  <form action="${path}/login">
                      <button type="submit">가입 및 로그인</button>
                   </form>
                </li>
@@ -489,26 +515,26 @@ footer a:hover {
             </ul>
          </div>
          <div class="header-btn">
-            <form action="/testing/scrollHome">
+            <form action="${path}/scrollHome">
                <button type="submit">중고거래</button>
             </form>
-            <form action="/testing/localproductList" method="post">
+            <form action="${path}/localproductList" method="post">
                <input type="hidden" name="newLocation" value="${detail_loc}" />
                <button type="submit">동네거래</button>
             </form>
          </div>
          <%
-         if (user != null && selectedUser != null && !selectedUser.isEmpty()) {
+         if (user != null && selectedUser != null) {
          %>
          <div class="header-btn2">
-            <form action="/testing/logout" method="post">
+            <form action="${path}/logout" method="post">
                <button type="submit">로그아웃</button>
             </form>
          </div>
          <%
          } else {
          %>
-         <form action="/testing/login">
+         <form action="${path}/login">
             <button type="submit">로그인</button>
          </form>
          <%
@@ -561,7 +587,7 @@ footer a:hover {
                         <td>${order.delivery_req}</td>
                         <td>${order.order_date}</td>
                         <td>
-                           <form action="/testing/heat" method="post">
+                           <form action="${path}/heat" method="post">
                               <input type="hidden" name="sell_code"
                                  value="${order.sell_code}" required> <input
                                  type="hidden" name="board_id" value="${order.board_id}"
@@ -594,7 +620,7 @@ footer a:hover {
       }
    </script>
 
-
+ 
 
 
    <footer>

@@ -11,8 +11,8 @@
 <!--<c:set  var="path2"   value="<%=request.getContextPath() %>"/> -->
 
 
-<!--${path} -->
-<!--${path2}  -->
+<!--${path}} -->
+<!--${path}2}  -->
 
 <!DOCTYPE html>
 <html>
@@ -57,10 +57,13 @@ header h2 {
 }
 
 .menu-icon {
+    justify-content: center;
+    align-items: center;
+    display: flex;
    order: -1;
    font-size: 24px;
    cursor: pointer;
-   margin-right: 20px;
+   margin-right: 20px; /* 햄버거 아이콘과 Second Hands 텍스트 사이의 간격 조절 */
 }
 
 header button {
@@ -107,8 +110,9 @@ header.menu-open h2 {
 
 .header-btn {
    display: flex;
-   margin: 0px 0px 0px 500px;
+   margin: 0px 0px 0px 0px;
 }
+
 
 header.menu-open {
    flex-direction: column;
@@ -183,11 +187,21 @@ header.menu-open h2 {
    font-weight: bold;
 }
 
+#sort {
+   color: #cfcfcf;
+   width: 749px;
+   display: flex;
+   align-items: center;
+   margin: 0px auto;
+   font-weight: bold;
+}
+
 #sort button {
    margin: 0px 6px 0px 6px;
+   width:101px;
    padding: 4px;
    font-weight: bold;
-   background-color:white;
+   background-color: white;
    color: black;
    border: none;
    border-radius: 4px;
@@ -202,7 +216,7 @@ header.menu-open h2 {
 .search {
    position: relative;
    width: 300px;
-   margin-left: 230px;
+   margin-left: 30px;
 }
 
 .search input {
@@ -302,7 +316,9 @@ border-radius: 12px;
    background: none;
    margin-right: 20px;
 }
-
+.footer {
+   margin-top: 300px;
+}
 
 .footer a {
    text-decoration: none; /* 텍스트 데코레이션 제거 */
@@ -373,67 +389,83 @@ border-radius: 12px;
 <body>
    <%
    LoginDTO user = (LoginDTO) session.getAttribute("user");
-   List<LoginDTO> selectedUser = (List<LoginDTO>) session.getAttribute("selectedUser");
+   LoginDTO selectedUser = (LoginDTO) session.getAttribute("selectedUser");
    List<Object> chatList = (List<Object>) request.getAttribute("chatList"); // chatList 추가
-   if (user != null && selectedUser != null && !selectedUser.isEmpty()) {
-      LoginDTO firstSelectedUser = selectedUser.get(0); // Assuming you want the first user in the list
+   if (user != null && selectedUser != null) {
+      LoginDTO firstSelectedUser = selectedUser; // Assuming you want the first user in the list
    %>
 
 
    <header>
       <div class="header-logo">
          <div class="menu-icon">&#9776;</div>
-         <form action="/testing/homePage">
+         <form action="${path}/homePage">
             <button type="submit">Second Hands</button>
          </form>
       </div>
 
       <div class="menu-container">
          <ul>
-            <li><h2></h2></li>
-            <li><img
-               src="${path}/images/<%=firstSelectedUser.getUser_image()%>"
-               style="border-radius: 50%; width: 100px; height: 100px;">
+      <% if ("admin".equals(selectedUser.getUser_id())) {
+%>
+      <li>
+            <form action="${path}/admin" method="post">
+            <button type="submit">관리자 페이지</button>
+        </form>
+   </li>     <%
+         }
+         %>
+            <li><img src="${selectedUser.user_image}" style="border-radius: 50%; width: 100px; height: 100px;">
                <h2>
                   <%
-                  if (user != null && selectedUser != null && !selectedUser.isEmpty()) {
+                  if (user != null && selectedUser != null) {
                   %>
-                  Welcome,
-                  <%=firstSelectedUser.getUser_nickname()%>님
-               </h2></li>
+                  	<form action="${path}/myPage" method="post">
+						<input type="hidden" name="user_code" value="${selectedUser.user_code}">
+						<button type="submit">
+						Welcome, ${selectedUser.user_nickname}님
+						</button>
+					</form>
+               </h2>
+            </li>
             <li>
-               <form action="/testing/myPage" method="post">
+               <form action="${path}/myPage" method="post">
                   <input type="hidden" name="user_code"
                      value="<%=firstSelectedUser.getUser_code()%>">
-                  <button type="submit">마이페이지 이동</button>
+                  <button type="submit">마이페이지</button>
                </form>
             </li>
             <li>
-               <form action="/testing/chattingList" method="post">
+               <form action="${path}/chattingList" method="post">
                   <input type="hidden" name="buy_code" placeholder="채팅 코드 입력"
                      value="<%=firstSelectedUser.getUser_code()%>">
-                  <button type="submit">새 채팅 ${fn:length(chatList)} 개</button>
+                  <button type="submit">채팅 ${fn:length(chatList)} 개</button>
 
 
                </form>
             </li>
             <li>
-               <form action="/testing/products/add">
+               <form action="${path}/products/add">
                   <button type="submit">게시글작성</button>
                </form>
             </li>
+                 <li>
+               <form action="${path}/sellProducts">
+                  <button type="submit">판매내역</button>
+               </form>
+            </li>
             <li>
-               <form action="/testing/showOrder">
+               <form action="${path}/showOrder">
                   <button type="submit">주문내역</button>
                </form>
             </li>
             <li>
-               <form action="/testing/qna">
+               <form action="${path}/qna">
                   <button type="submit">문의하기</button>
                </form>
             </li>
             <li>
-               <form action="/testing/logout" method="post">
+               <form action="${path}/logout" method="post">
                   <button type="submit">로그아웃</button>
                </form>
             </li>
@@ -442,7 +474,7 @@ border-radius: 12px;
             %>
             <li><h2>로그인이 필요한 서비스입니다.</h2></li>
             <li>
-               <form action="/testing/login">
+               <form action="${path}/login">
                   <button type="submit">가입 및 로그인</button>
                </form>
             </li>
@@ -453,26 +485,26 @@ border-radius: 12px;
          </ul>
       </div>
       <div class="header-btn">
-         <form action="/testing/scrollHome">
+         <form action="${path}/scrollHome">
             <button type="submit">중고거래</button>
          </form>
-         <form action="/testing/localproductList" method="post">
+         <form action="${path}/localproductList" method="post">
             <input type="hidden" name="newLocation" value="${detail_loc}" />
             <button type="submit">동네거래</button>
          </form>
       </div>
       <%
-      if (user != null && selectedUser != null && !selectedUser.isEmpty()) {
+      if (user != null && selectedUser != null) {
       %>
       <div class="header-btn2">
-         <form action="/testing/logout" method="post">
+         <form action="${path}/logout" method="post">
             <button type="submit">로그아웃</button>
          </form>
       </div>
       <%
       } else {
       %>
-      <form action="/testing/login">
+      <form action="${path}/login">
          <button type="submit">로그인</button>
       </form>
       <%
@@ -486,7 +518,11 @@ border-radius: 12px;
      <div id="sort">
          <button id="srTime">최신순</button>|
          <button id="srClick">인기순</button>|
-         <button id="srLike">관심상품</button>
+           <button id="srLike">관심상품</button>
+         |
+             <form action="${path}/products/add">
+                  <button type="submit">게시글작성</button>
+               </form>
          <div class="search">
             <input type="text" id="srSearch" value="" placeholder="검색어 입력">
             <img
@@ -554,7 +590,7 @@ border-radius: 12px;
               $("body").css("height", wrapH-(cursorH*3));
               let endSql = `         
                   <div style = 'height:200px; background-color: #333;  padding: 10px; text-align: center; color:white'>
-            	  &copy; 2023 에이콘아카데미 최종프로젝트 <br>   
+                 &copy; 2023 에이콘아카데미 최종프로젝트 <br>   
               <p><a href="https://github.com/dhdl2389">조장: 김재열</a> |
                     <a href="https://github.com/mvcfvsgdj">조원: 김민규 </a> |
                     <a href="https://github.com/kevinbj0">조원: 김병진 </a> |
@@ -570,32 +606,36 @@ border-radius: 12px;
            }
    });
     
-     //페이지 로드
-      function loadPage(pageNumber) {
-       if (!loading) {
-           loading = true;
-           $.ajax({
-               url: "localScroll?page=" + pageNumber + "&mode=" + sort_mode + "&detail_loc=" + detail_loc,
-               type: "GET",
-               success: function(data) {
-                   list = data.loclist;
-                   if( list.length !== 0){
-                       totalPage = data.totalPage;
-                       let sql = pageToString(list);
-                       $(".scrollWrap").append(sql);
-                   }else{
-                      alert("해당 지역 내 상품이 없습니다.");
-                       window.location.href = "/testing/homePage";
-                                      }
-                   loading = false;
-               },
-               error: function(error) {
-                   console.log("Error:", error);
-                   loading = false;
-               }
-           });
-       }
-   }    
+  //페이지 로드
+    function loadPage(pageNumber) {
+     if (!loading) {
+         loading = true;
+         $.ajax({
+             url: "localScroll?page=" + pageNumber + "&mode=" + sort_mode + "&detail_loc=" + detail_loc,
+             type: "GET",
+             success: function(data) {
+                 list = data.loclist;
+                 if( list.length !== 0){
+                     totalPage = data.totalPage;
+                     let sql = pageToString(list);
+                     $(".scrollWrap").append(sql);
+                 }
+                 else if(list.length == 0 && pageNumber !== 1){
+                    alert("더 이상 상품이 없습니다.");
+                 }
+                 else{
+                    alert("해당 지역 내 상품이 없습니다.");
+                     window.location.href = "${path}/homePage";
+                 }
+                 loading = false;
+             },
+             error: function(error) {
+                 console.log("Error:", error);
+                 loading = false;
+             }
+         });
+     }
+ }    
     //str문 생성
      function  pageToString(list){
           let str = "";
@@ -603,7 +643,7 @@ border-radius: 12px;
                str += `         
                    <article class="card_wrap">
                 <div class="card_image" style="background-image: url('${path}/images/<%="${item.board_img}" %>')"></div>
-                   <h2 class="card_title">    <a class="card_a" href="/testing/products/detail?boardId=<%="${item.board_id}" %>&user_code=<%="${item.user_code}"%>">
+                   <h2 class="card_title">    <a class="card_a" href="${path}/products/detail?boardId=<%="${item.board_id}" %>&user_code=<%="${item.user_code}"%>">
                      <%="${item.board_title}"%>
                      </a></h2>
                 <div class = "card_date"><%="${item.board_date}"%> </div>
@@ -685,30 +725,36 @@ border-radius: 12px;
         });
     }
     
-    //관심목록 출력
-    function LikeList(){
-       if (!loading) {
-         loading = true;
-         $.ajax({
-            url: "${path}/likeList",
-            type: "POST",
-            data: {userId:userId},
+ //페이지 로드
+   function loadPage(pageNumber) {
+    if (!loading) {
+        loading = true;
+        $.ajax({
+            url: "localScroll?page=" + pageNumber + "&mode=" + sort_mode + "&detail_loc=" + detail_loc,
+            type: "GET",
             success: function(data) {
-               let list = data;
-               let sql = pageToString(list);
-               $(".scrollWrap").empty();
-               $(".scrollWrap").append(sql);
-   
-               loading = false;
+                list = data.loclist;
+                if( list.length !== 0){
+                    totalPage = data.totalPage;
+                    let sql = pageToString(list);
+                    $(".scrollWrap").append(sql);
+                }
+                else if(list.length == 0 && pageNumber !== 1){
+                   alert("더 이상 상품이 없습니다.");
+                }
+                else{
+                   alert("해당 지역 내 상품이 없습니다.");
+                    window.location.href = "${path}/homePage";
+                }
+                loading = false;
             },
             error: function(error) {
-               console.log("Error:", error);
-               loading = false;
+                console.log("Error:", error);
+                loading = false;
             }
-         });
-      }
-       
+        });
     }
+}    
      //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 좋아요 기능 END
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 부가기능 : 맨위로
     //맨위로 올리기
@@ -763,6 +809,30 @@ border-radius: 12px;
       }
       
    });
+   //관심목록 출력
+   function LikeList(){
+      if (!loading) {
+        loading = true;
+        $.ajax({
+           url: "${path}/likeList",
+           type: "POST",
+           data: {userId:userId},
+           success: function(data) {
+              let list = data;
+              let sql = pageToString(list);
+              $(".scrollWrap").empty();
+              $(".scrollWrap").append(sql);
+  
+              loading = false;
+           },
+           error: function(error) {
+              console.log("Error:", error);
+              loading = false;
+           }
+        });
+     }
+      
+   }
 </script>
    <%
    }

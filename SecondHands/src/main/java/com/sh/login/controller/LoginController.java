@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ import com.sh.login.domain.LoginDTO;
 import com.sh.login.service.LoginService;
 import com.sh.order.domain.OrderDTO;
 import com.sh.order.service.OrderServiceI;
+import com.sh.product.domain.ProductDTO;
 import com.sh.product.service.ProductService;
 
 @Controller
@@ -41,22 +43,16 @@ public class LoginController {
          // System.out.println("dfdfdf===>" + loginDTO);
 
          HttpSession session = request.getSession();
-
-         session.setAttribute("user", loginDTO);
-
-         // 세션에서 유저 정보 가져오기
-         LoginDTO loggedInUser = (LoginDTO) session.getAttribute("user");
-         // System.out.println("Logged in user: " + loggedInUser);
+  
 
          // selectAll 메소드 호출하여 유저 정보 가져오기
-         List<Object> selectedUser = loginService.selectAll(loginDTO);
-         System.out.println("Selected user: " + selectedUser);
-
-         LoginDTO firstSelectedUser = (LoginDTO) selectedUser.get(0);
+         String userId = loginDTO.getUser_id();
+         LoginDTO selectedUser = loginService.getLoginDTO(userId);
+         session.setAttribute("user", selectedUser);
 
          // 세션에 selectedUser 저장
          session.setAttribute("selectedUser", selectedUser);
-         String chatlogin = firstSelectedUser.getUser_code();
+         String chatlogin = selectedUser.getUser_code();
          System.out.println("코드뽑아오기" + chatlogin);
 
          List<Object> chatList = chatService.selectAllCode(chatlogin);
@@ -70,6 +66,19 @@ public class LoginController {
       }
 
    }
+//////관리자 기능 추가////////
+   @PostMapping("/admin")
+   public String showAdminPage(Model model, @ModelAttribute ProductDTO productDTO) {
+       List<LoginDTO> userList = loginService.selectAllUsers();
+       List<ProductDTO> products = productService.getProductList();
+       model.addAttribute("products", products);
+       model.addAttribute("userList", userList);
+       return "admin/adminPage";
+   }
+
+	
+	
+	  
 
    @PostMapping("/heat")
    public String showHeatPage(HttpSession session, @RequestParam String sell_code, @RequestParam String board_id, Model model) {
@@ -116,8 +125,6 @@ public class LoginController {
 	   
       if (loginService.updateHeat(user_heat, user_code) > 0) {
     	  productService.deleteProduct(board_id);
-    	  List<Object> updatedUser = loginService.selectAll(loginDTO);
-         System.out.println(updatedUser);
          
          loginService.saveHeat(user_code, user_heat,check_heat,board_id);
          return "/homePage/homePage";
