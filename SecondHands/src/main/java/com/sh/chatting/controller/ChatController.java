@@ -28,40 +28,19 @@ public class ChatController {
 	@Autowired
 	private ProductService productService;
 
-//   @GetMapping("/chatinsert")
-//   public String chatinsert() {
-//      return "/homePage/homePage"; 
-//   }
-
-//   @PostMapping("/insertchatcode")
-//   public String chatcode(ChatDTO chatDTO, HttpSession session) {
-//       session.setAttribute("buy_code", chatDTO.getBuy_code());
-//       chatService.insertChat(chatDTO);
-//       System.out.println("성공");
-//       return "/homePage/homePage";
-//   }
-
-//   @GetMapping("/chattingList")
-//   public String chattingList() {
-//      return "chattingList"; 
-//   }
-
-//   @PostMapping("/chattingList")
-//   public String chatList(@RequestParam String buy_code, HttpSession session) {
-//       List<Object> chatList = chatService.selectAllCode(buy_code);
-//       session.setAttribute("chatList", chatList);
-//       return "/chatting/chattingList";
-//   }
-
+	
+	// 채팅 리스트 조회
 	@PostMapping("/chattingList")
-	public String chatList(@RequestParam String buy_code, HttpSession session, Model model) {
+	public String chatList(@RequestParam String buy_code,HttpSession session, Model model) {
 		List<Object> chatList = chatService.selectAllCode(buy_code);
 
-		// System.out.println("넘어갈때 리스트"+chatList);
+		
+		 System.out.println("넘어갈때 리스트"+chatList);
 		session.setAttribute("chatList", chatList);
 		return "/chatting/chattingList";
 	}
-
+	
+	// 채팅내 유저들 정보
 	@GetMapping("/inchat")
 	public String inchat(@RequestParam String chat_code, @RequestParam String sell_code, @RequestParam String buy_code,
 			@RequestParam String board_Title, @RequestParam String board_Price, @RequestParam String board_Img,
@@ -92,15 +71,17 @@ public class ChatController {
 		// System.out.println("제목"+board_Title);
 
 		// System.out.println(buy_code);
-		// System.out.println(chatCode);
+		 System.out.println(chatCode);
 		return "chatting/chatting";
 	}
-
+	
+	// 판매자 코드 확인
 	@PostMapping("/checkCode")
 	public String checkCode(ChatDTO chatDTO, @RequestParam String buy_code, @RequestParam String sell_code,
-			@RequestParam String board_id, @RequestParam String board_Title, @RequestParam String user_nickname,
+			@RequestParam String board_id, @RequestParam String board_Title, @RequestParam String sell_nickname,
+			@RequestParam String buy_nickname,
 			@RequestParam String board_Price, @RequestParam String board_Img, HttpSession session, Model model) {
-		boolean isCodeValid = chatService.cheackCode(buy_code, sell_code, board_id, board_Title, user_nickname,
+		boolean isCodeValid = chatService.cheackCode(buy_code, sell_code, board_id, board_Title, sell_nickname,buy_nickname,
 				board_Price, board_Img);
 		model.addAttribute("isCodeValid", isCodeValid);
 		// System.out.println(isCodeValid);
@@ -124,11 +105,7 @@ public class ChatController {
 		}
 	}
 
-//   @GetMapping("/deleteChat")
-//   public String deleteChat() {
-//      return "/chatting/deleteChatting";
-//   }
-
+	// 채팅 삭제
 	@PostMapping("/deleteChatting")
 	public String deleteChatting(ChatDTO chatDTO, @RequestParam String chat_code, @RequestParam String buy_code,
 			HttpSession session, Model model) {

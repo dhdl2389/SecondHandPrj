@@ -178,23 +178,8 @@ button:hover {
 	background-color: #d55500;
 }
 
-footer {
-	background-color: #333;
-	padding: 10px;
-	color: white;
-	text-align: center;
-	bottom: 0;
-}
 
-footer a {
-	text-decoration: none; /* 텍스트 데코레이션 제거 */
-	color: inherit; /* 링크의 색상을 부모 요소로부터 상속 */
-}
 
-footer a:hover {
-	text-decoration: none; /* 호버 시 텍스트 데코레이션 제거 유지 */
-	color: inherit; /* 호버 시 색상을 부모 요소로부터 상속 */
-}
 
 textarea {
 	resize: none;
@@ -358,6 +343,7 @@ $(document).ready(
                  });
         });
         
+//이전 페이지로 이동하는 함수
 function prevPage(){
 	if(${handler.currentPage} > ${handler.grpSize}){
 		window.location.href='${path}/qna?p=${handler.grpStartPage-1 }';
@@ -366,7 +352,7 @@ function prevPage(){
 		window.location.href='${path}/qna?p=${handler.grpStartPage }';
 	}
 }
-
+//다음 페이지로 이동하는 함수
 function nextPage(){
 	if(${handler.grpEndPage} < ${handler.totalPage}){
 		window.location.href='${path}/qna?p=${handler.grpEndPage+1 }';
@@ -374,7 +360,7 @@ function nextPage(){
 		alert("마지막 페이지입니다.");
 	}
 }
-
+//로그인 체크 함수
 function logincheck(){
 	let useriderr = "${useriderr}";
 	if(useriderr != ""){
@@ -570,7 +556,7 @@ function logincheck(){
 				</tbody>
 			</table>
 			<div class="reg">
-				<input type="button" class="reg-btn" value="글등록"
+				<input type="button" class="reg-btn" value="등록"
 					onclick="window.location.href='${path}/qna/reg'">
 			</div>
 			<div class="page-btn">
@@ -590,17 +576,6 @@ function logincheck(){
 		</div>
 	</div>
 
-
-	<footer>
-		&copy; 2023 에이콘아카데미 최종프로젝트 <br>
-		<p>
-			<a href="https://github.com/dhdl2389">조장: 김재열</a> | <a
-				href="https://github.com/mvcfvsgdj">조원: 김민규 </a> | <a
-				href="https://github.com/kevinbj0">조원: 김병진 </a> | <a
-				href="https://github.com/LeeJungHoon1">조원: 이정훈 </a> | <a
-				href="https://github.com/lepio1999">조원: 허재혁 </a>
-		</p>
-	</footer>
 
 
 

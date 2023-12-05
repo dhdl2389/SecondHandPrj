@@ -177,23 +177,7 @@ button:hover {
 	background-color: #d55500;
 }
 
-footer {
-	background-color: #333;
-	padding: 10px;
-	color: white;
-	text-align: center;
-	bottom: 0;
-}
 
-footer a {
-	text-decoration: none; /* 텍스트 데코레이션 제거 */
-	color: inherit; /* 링크의 색상을 부모 요소로부터 상속 */
-}
-
-footer a:hover {
-	text-decoration: none; /* 호버 시 텍스트 데코레이션 제거 유지 */
-	color: inherit; /* 호버 시 색상을 부모 요소로부터 상속 */
-}
 
 textarea {
 	resize: none;
@@ -203,7 +187,7 @@ textarea {
 .reg {
 	min-height: 700px;
 	margin: 0 auto;
-	margin-top: 20px;
+	margin-top: 115px;
 	margin-bottom: 20px;
 	border-radius: 26px;
 	width: 1008px;
@@ -486,7 +470,7 @@ textarea {
 								<option value="">선택하세요</option>
 								<option value="t">공개</option>
 								<option value="f">비공개</option>
-						</select> <input type="submit" class="submit-btn" value="글등록하기"></td>
+						</select> <input type="submit" class="submit-btn" value="등록"></td>
 					</tr>
 				</table>
 			</form>
@@ -499,16 +483,7 @@ textarea {
 	</div>
 
 
-	<footer>
-		&copy; 2023 에이콘아카데미 최종프로젝트 <br>
-		<p>
-			<a href="https://github.com/dhdl2389">조장: 김재열</a> | <a
-				href="https://github.com/mvcfvsgdj">조원: 김민규 </a> | <a
-				href="https://github.com/kevinbj0">조원: 김병진 </a> | <a
-				href="https://github.com/LeeJungHoon1">조원: 이정훈 </a> | <a
-				href="https://github.com/lepio1999">조원: 허재혁 </a>
-		</p>
-	</footer>
+
 
 
 	<%
