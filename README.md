@@ -20,6 +20,12 @@ Spring 프레임워크와 MyBatis를 활용하여 구현 및 배포를 진행했
 [이곳을 클릭하여 보세요](https://dbdiagram.io/d/653b74c9ffbf5169f092c009) <br>
 
  <br>
+ 
+## 🔖담당파트 개발명세서 <br>
+ 
+<img width="800" src="https://github.com/dhdl2389/SecondHandPrj/assets/136558510/cb833284-7729-45fb-8e5a-d51fc32ef836">
+
+ <br>
  <br>
  
 ## 🛠️담당 파트 <br>
