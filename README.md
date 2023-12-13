@@ -52,6 +52,7 @@ Spring 프레임워크와 MyBatis를 활용하여 구현 및 배포를 진행했
 <img width="800" src="https://github.com/dhdl2389/SecondHandPrj/assets/136558510/f7ba0f82-3e70-428d-92d3-0bd59d90fcaa">
 
  <br>
+ 
  <br>
  
 ## 🪢아키텍쳐(MySQL) <br>
